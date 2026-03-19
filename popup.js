@@ -383,5 +383,5 @@ document.querySelectorAll('.s-engine-btn').forEach(btn => {
 // сохранить город
 document.getElementById('settings-city-save').addEventListener('click', () => {
   const city = document.getElementById('settings-city').value.trim();
-  if (city) localStorage.setItem('ob_city', city);
+  if (city) localStorage.setItem('ob_city');
 }); 

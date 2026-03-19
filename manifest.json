@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MarkUI",
   "version": "1.0",
-  "description": "EN - This open source extension help you customize your homepage from ugly default page to customizable page with custom icons, fonts, styles, colors etc",
+  "description": "EN - This open sourca extension help you customize your homepage from ugly default page to customizable page with custom icons, fonts, styles, colors etc",
   "action": {
     "default_popup": "popup.html"
   },
