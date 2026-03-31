@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Tab</title>
+  <!-- Anonymous Pro, Google Sans Flex, Manrope, Poppins, Jost, Bricolage Grotesque, Nunito Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -110,7 +112,7 @@
   <div class="search-bar" id="search-bar"></div>
   <div id="sites-grid"></div>
   <div class="site-card">
-    <button id="add-btn" title="Add site">+</button>
+    <button id="add-btn" title="Add site" style="border-radius: 15px;">+</button>
     <span class="site-label">Add</span>
   </div>
   <div id="modal">
@@ -144,6 +146,11 @@
   <div id="settings-overlay"></div>
   <div id="settings-drawer">
     <h2>settings</h2>
+
+    <div class="theme-store-box" id="theme-button" style="cursor: pointer;">
+    <img src="/Icons/layout.png" class="theme-store" title="Theme Store">
+    <span class="theme-text" title="Theme Store" >Store</span>
+</div>
 
     <section class="settings-section">
       <p class="settings-label">accent colour</p>
@@ -186,31 +193,165 @@
       <p class="M-S">Main Settings</p>
     </div>
 
-    <div class="fonts-w"> 
-  <p class="f-w">Fonts for widgets</p>
+    <div class="fonts-f"> 
+  <p class="f-w">Fonts Changer</p>  
   <input id="settings-city-fonts" type="text" placeholder='Default font - "Jost". Only GoogleFonts' />
   <button id="settings-font-save" class="btn-finish" style="margin-top:10px;">save</button>
 </div>
 
-<section class="settings-section-w">
-  <p class="settings-label-w">city for weather widget</p>
-  <input id="settings-city" type="text" placeholder="Type here" />
-  <button id="settings-city-save" class="btn-finish" style="margin-top:10px;">save</button>
+<section class="settings-section-t">
+  <p class="settings-label-t">Transparency changer</p>  
+  <input id="settings-transparency" type="range" min="0" max="100" value="15">
+  <button id="settings-transparency-save" class="btn-finish" style="margin-top:10px;">save</button>
+</section>
+
+<section class="settings-br-c">
+  <div class="border-target-wrap" id="border-target-wrap">
+    <div class="border-target-box" id="border-target-box">
+      <button class="border-target-btn active" data-target="widgets">Widgets</button>
+      <button class="border-target-btn" data-target="add-link">add-link</button>
+      <button class="border-target-btn" data-target="search-bar">search-bar</button>
+      <button class="border-target-btn" data-target="all">all</button>
+    </div>
+  </div>
+
+  <div class="border-picker-header" id="border-picker-toggle">
+    <p class="settings-bor-cha">Border-Radius changer</p>
+    <span class="border-arrow" id="border-arrow" title="more options">˄</span>
+  </div>
+
+  <input id="settings-borderradius" type="range" min="0" max="35" value="15">
+  <button id="settings-border-save" class="btn-finish" style="margin-top:10px;">save</button>
 </section>
 
 <div class="fonts-w"> 
-  <p class="c-w">Change Wallpaper</p>
+  <p class="c-w">Wallpaper Changer</p>
   <input type="file" id="wallpaper-input" accept="image/*" style="display:none;">
   <label for="wallpaper-input" class="btn-finish" style="text-align:center; cursor:pointer; position: relative; bottom: 10px; border-radius: 10px;">choose</label>
-  <p class="p-u-w">"Default Wallpaper" you can find on</p>
-  <a href="https://github.com/markuifoxex/MarkUI.FireFox" target="_blank" style="text-decoration: underline; text-decoration-color: #5c5c5c; color: #4f4f4f;">
-  <span class="p-u-w-g">GitHub</span>
-</a>
+  <p class="p-u-w">
+  "Default Wallpaper" you can find on 
+  <a href="https://github.com/markuifoxex/MarkUI.FireFox" target="_blank">
+    <img src="/Icons/github.png" class="github-logo" width="15" height="15" style="position: relative; top: 3px;" alt="GitHub">
+  </a>
+</p>
+
+<div class="security-mode-m">
+  <p class="security-mode">Privacy-mode<img src="/Icons/help.png" class="info" width="12" height="12" title="Privacy mode hides the text you type
+in the search bar so no one can see it." style="cursor: pointer;"></p>
+  <button class="btn-mode">
+    <img src="/Icons/star1.png" class="star" width="11" height="11">
+    <img src="/Icons/star2.png" class="star" width="11" height="11">
+    <img src="/Icons/star3.png" class="star" width="11" height="11">
+    <img src="/Icons/star4.png" class="star" width="11" height="11">
+    <img src="/Icons/star5.png" class="star" width="11" height="11">
+    <img src="/Icons/star6.png" class="star" width="11" height="11">
+  </button>
+</div>
+
+<section class="settings-section-w">
+  <p class="settings-label-w">City for weather widget</p>
+  <input id="settings-city" type="text" placeholder="Type here" />
+  <button id="settings-city-save" class="btn-finish" style="margin-top:10px;">save</button>
+</section>
 
 </div>
   </div>
 </div>
 
-<script src="popup.js"></script>
+<!-- Modal box of Themes, wallpapers -->
+<div id="theme-modal">
+  <div class="theme-modal-box">
+    <p class="theme-x" style="cursor: pointer;">×</p>
+
+    <div class="theme-grid">
+
+   <div class="theme-item-slash">
+    <p class="theme-name-text">────────────────────────────────────themes────────────────────────────────────</p>
+  </div>   
+
+  <div class="theme-item-green">
+    <img src="/Themes/theme1.png" class="theme-card">
+    <p class="theme-name">Green Summer🍃</p>
+  </div>
+
+  <div class="theme-item-forest">
+    <img src="/Themes/theme2.png" class="theme-card">
+    <p class="theme-name">Forest Vibe🌲</p>
+  </div>
+
+  <div class="theme-item-park">
+    <img src="/Themes/theme3.png" class="theme-card">
+    <p class="theme-name">Crazy Park🫨</p>
+  </div>
+
+  <div class="theme-item-anon">
+    <img src="/Themes/theme4.png" class="theme-card">
+    <p class="theme-name">An*nym*us🥸</p>
+  </div>
+
+  <div class="theme-item-firefox">
+    <img src="/Themes/theme5.png" class="theme-card">
+    <p class="theme-name">We Love Fire🦊(Default Theme)</p>
+  </div>
+
+  <div class="theme-item-uk">
+    <img src="/themes/theme6.png" class="theme-card">
+    <p class="theme-name">StandWithUkraine☮️</p>
+  </div>
+
+  <div class="theme-item-slash">
+    <p class="theme-name-text">───────────────────────────────────wallpapers───────────────────────────────────</p>
+    
+  <p class="theme-name-p">
+    All wallpaper in 4k you can find on
+    <a href="https://github.com/markuifoxex/MarkUI.FireFox" target="_blank">
+      <img src="Icons/githublogo.png" class="github-logo-wall" alt="GitHub">
+    </a>
+  </p>
+</div>
+
+  <div class="theme-item-apple">
+    <img src="/Wallpaper/Theme10.png" class="theme-card">
+    <p class="theme-name">Just Bitten Apple🤔(AI)</p>
+  </div>
+
+  <div class="theme-item-window">
+    <img src="/Wallpaper/theme7.png" class="theme-card">
+    <p class="theme-name">11🪟</p>
+  </div>
+
+  <div class="theme-item-linux">
+    <img src="/Wallpaper/theme8.png" class="theme-card">
+    <p class="theme-name">Who is it penguin?🐧(AI)</p>
+  </div>
+
+  <div class="theme-item-quotes">
+    <img src="/Wallpaper/theme9.png" class="theme-card">
+    <p class="theme-name">The quote about politics📑</p>
+  </div>
+
+  <div class="theme-item-Duck">
+    <img src="/Wallpaper/theme11.png" class="theme-card">
+    <p class="theme-name">Duck.Duck.Duck.💛</p>
+  </div>
+  
+   <div class="theme-item-pink">
+    <img src="/Wallpaper/theme12.png" class="theme-card">
+    <p class="theme-name">Who said pink is only for women?🩷</p>
+  </div>
+
+  <div class="theme-item-reddot">
+    <img src="/Wallpaper/theme13.png" class="theme-card">
+    <p class="theme-name">Carl Pei🟥◻️⚫.</p>
+  </div>
+
+  <div class="theme-item-redq">
+    <img src="/Wallpaper/theme14.png" class="theme-card">
+    <p class="theme-name">Love is Love💓</p>
+  </div>
+
+</div>
+
+<script src="popup.js"></script>  
 </body>
 </html>

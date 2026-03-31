@@ -14,6 +14,17 @@ const engineData = {
   custom: { url: '',                                param: 'q', label: 'Search' }
 };
 
+let borderRadiusTarget = 'all'
+
+const defaultBorderRadius = {
+  all:15,
+  widgets:15,
+  'add-link':15,
+  'search-bar':15 
+}
+
+let borderRadiusState = JSON.parse(localStorage.getItem('ob_borderradius_map')) || defaultBorderRadius;
+
 // ── ONBOARDING NAV ──
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
@@ -69,14 +80,13 @@ if (nextBtn) {
 // ── COLOUR PICKER ──
 document.querySelectorAll('.colour-swatch').forEach(sw => {
   sw.addEventListener('click', () => {
+    if (!sw.dataset.colour) return;
+
     document.querySelectorAll('.colour-swatch').forEach(s => s.classList.remove('selected'));
     sw.classList.add('selected');
-
-    if (sw.dataset.colour) {
-      state.colour = sw.dataset.colour;
-    }
+    state.colour = sw.dataset.colour;
   });
-});
+}); 
 
 // ── CITY INPUT ──
 const showCityBtn = document.getElementById('show-city-input');
@@ -227,29 +237,145 @@ function launchApp() {
 }
 
 // ── ACCENT COLOUR ──
-function applyAccentColour(colour) {
+function applyAccentColour(colour, mode = 'theme') {
+
+  document.documentElement.style.setProperty('--accent-colour', colour);
+
   const clock = document.getElementById('clock');
   if (clock) clock.style.color = colour;
 
   document.querySelectorAll('.search-form input').forEach(el => {
     el.style.borderColor = colour;
-  });
-
-  document.querySelectorAll('.settings-label, .settings-label-w').forEach(el => {
     el.style.color = colour;
   });
 
-  document.querySelectorAll('#settings-drawer h2').forEach(el => {
-    el.style.color = colour;
-  });
-
-  document.querySelectorAll('#settings-drawer input').forEach(el => {
-    el.style.borderColor = colour;
-  });
+  document.querySelectorAll('#settings-drawer input:not(#colour-input):not(#settings-transparency)').forEach(el => {
+  el.style.borderColor = colour;
+  el.style.color = colour;
+});
 
   document.querySelectorAll('.btn-finish').forEach(el => {
     el.style.borderColor = colour;
+    el.style.color = colour;
   });
+
+  document.querySelectorAll('.btn-mode').forEach(el => {
+    el.style.borderColor = colour;
+    el.style.color = colour;
+  });
+
+  document.querySelectorAll('.engine-btn').forEach(el => {
+    el.style.borderColor = colour;
+  });
+  
+  document.querySelectorAll('#btn-cancel, #btn-save, #custom-cancel, #custom-save').forEach(el => {
+    el.style.borderColor = colour;
+  });
+
+  // 👉 ВАЖНО: разное поведение
+  if (mode === 'theme') {
+    // ВСЁ красится в выбранный цвет
+    document.querySelectorAll(
+  '.settings-label, .settings-label-w, .settings-label-t, .M-S, .f-w, .c-w, .settings-bor-cha, .security-mode').forEach(el => {
+  el.style.color = colour;
+});
+
+    document.querySelectorAll('.p-u-w, .p-u-w-g').forEach(el => {
+      el.style.color = colour;
+    });
+
+  } else {
+    // ДЕФОЛТНАЯ ТЕМА (серые)
+    document.querySelectorAll('.settings-label, .settings-label-w, .settings-label-t, .f-w, .c-w, .settings-bor-cha, .security-mode').forEach(el => {
+  el.style.color = 'rgba(255,255,255,0.3)';
+});
+
+    document.querySelectorAll('.M-S').forEach(el => {
+      el.style.color = 'rgba(255,255,255,0.655)';
+    });
+
+    document.querySelectorAll('.p-u-w, .p-u-w-g').forEach(el => {
+      el.style.color = '#4f4f4f';
+    });
+  }
+}
+
+// Transparency changer 
+
+function applyTransparency(alphaPercent) {
+  const alpha = Math.max(0, Math.min(100, Number(alphaPercent))) / 100;
+  const bgValue = `rgba(20, 20, 20, ${alpha})`;
+  document.querySelectorAll('.search-bar input').forEach(el => {
+    el.style.background = bgValue;
+  });
+
+  const settingsDrawer = document.getElementById('settings-drawer');
+  if (settingsDrawer) {
+    settingsDrawer.style.background = bgValue;
+  }
+}
+
+function applyBorderRadiusByTarget(target, value) {
+  const r = value + 'px';
+
+  if (target === 'all' || target === 'search-bar') {
+    document.querySelectorAll('.search-form input').forEach(el => {
+      el.style.borderRadius = r;
+    });
+  }
+
+  if (target === 'all' || target === 'add-link') {
+    const addBtn = document.getElementById('add-btn');
+    if (addBtn) addBtn.style.borderRadius = r;
+  }
+
+  if (target === 'all' || target === 'widgets') {
+    document.querySelectorAll('.site-icon').forEach(el => {
+      el.style.borderRadius = r;
+    });
+  }
+}
+
+function applyAllBorderRadiusSettings() {
+  applyBorderRadiusByTarget('widgets', borderRadiusState.widgets);
+  applyBorderRadiusByTarget('add-link', borderRadiusState['add-link']);
+  applyBorderRadiusByTarget('search-bar', borderRadiusState['search-bar']);
+}
+
+const borderSave = document.getElementById('settings-border-save');
+if (borderSave) {
+  borderSave.addEventListener('click', () => {
+    const input = document.getElementById('settings-borderradius');
+    if (!input) return;
+
+    const value = input.value;
+
+    if (borderRadiusTarget === 'all') {
+      borderRadiusState.all = value;
+      borderRadiusState.widgets = value;
+      borderRadiusState['add-link'] = value;
+      borderRadiusState['search-bar'] = value;
+      applyBorderRadiusByTarget('all', value);
+    } else {
+      borderRadiusState[borderRadiusTarget] = value;
+      applyBorderRadiusByTarget(borderRadiusTarget, value);
+    }
+
+    localStorage.setItem('ob_borderradius_map', JSON.stringify(borderRadiusState));
+  });
+
+  const borderInput = document.getElementById('settings-borderradius');
+  if (borderInput) {
+    borderInput.addEventListener('input', () => {
+      const value = borderInput.value;
+
+      if (borderRadiusTarget === 'all') {
+        applyBorderRadiusByTarget('all', value);
+      } else {
+        applyBorderRadiusByTarget(borderRadiusTarget, value);
+      }
+    });
+  }
 }
 
 // ── INIT APP ──
@@ -285,9 +411,18 @@ function initApp() {
       inp.type = 'text';
       inp.name = eng.param;
       inp.placeholder = eng.label;
+      
+      inp.setAttribute('autocomplete', 'off');
+      inp.setAttribute('data-bwignore', 'true');
+      inp.setAttribute('spellcheck', 'false');
 
       form.appendChild(inp);
-      bar.appendChild(form);
+      bar.appendChild(form);  
+
+      const savedT = localStorage.getItem('ob_transparency');
+      if (savedT) applyTransparency(savedT); else applyTransparency(15);
+      
+      applyAllBorderRadiusSettings();
     });
   }
 
@@ -328,9 +463,12 @@ function initApp() {
       if (e.target === modal) {
         modal.classList.remove('open');
       }
+      if (typeof applySecurityMode === 'function') applySecurityMode();
     });
   }
 }
+
+applyAccentColour(state.colour);
 
 // ── SAVE SITE ──
 function saveSite() {
@@ -438,7 +576,12 @@ if (localStorage.getItem('ob_done') === '1') {
     }
   }
 
+  document.querySelectorAll('search-form input').forEach(el => {
+    el.style.fontFamily = `'${savedFont}', sans-serif`;
+  });
+
   initApp();
+  applyAccentColour(state.colour);
 }
 
 // ── FONT SAVE ──
@@ -464,6 +607,10 @@ if (settingsFontSave) {
 
       const clock = document.getElementById('clock');
       if (clock) clock.style.fontFamily = `'${font}', sans-serif`;
+
+      document.querySelectorAll('.search-form input').forEach(el => {
+      el.style.fontFamily = `'${font}', sans-serif`;
+      });
 
       localStorage.setItem('ob_font', font);
 
@@ -506,11 +653,29 @@ if (btnEdit && settingsPanel) {
   });
 }
 
-if (settingsOverlay && settingsPanel) {
-  settingsOverlay.addEventListener('click', () => {
-    settingsPanel.classList.remove('open');
+const borderPickerToggle = document.getElementById('border-picker-toggle');
+const borderTargetWrap = document.getElementById('border-target-wrap');
+
+if (borderPickerToggle && borderTargetWrap) {
+  borderPickerToggle.addEventListener('click', () => {
+    borderPickerToggle.classList.toggle('open');
+    borderTargetWrap.classList.toggle('open');
   });
 }
+
+document.querySelectorAll('.border-target-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.border-target-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    borderRadiusTarget = btn.dataset.target;
+
+    const borderInput = document.getElementById('settings-borderradius');
+    if (borderInput && borderRadiusState[borderRadiusTarget] !== undefined) {
+      borderInput.value = borderRadiusState[borderRadiusTarget];
+    }
+  });
+});
 
 // цвет в настройках
 document.querySelectorAll('#settings-panel .colour-swatch').forEach(sw => {
@@ -527,7 +692,25 @@ document.querySelectorAll('#settings-panel .colour-swatch').forEach(sw => {
   });
 });
 
-const colourInput = document.getElementById('colour-input'); if (colourInput) { colourInput.addEventListener('input', (e) => { const picked = e.target.value; state.colour = picked; localStorage.setItem('ob_colour', picked); applyAccentColour(picked); document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => { s.classList.remove('selected'); }); const pickerSwatch = document.querySelector('.colour-picker-swatch'); if (pickerSwatch) pickerSwatch.classList.add('selected'); }); }
+const colourInput = document.getElementById('colour-input');
+
+if (colourInput) {
+  colourInput.addEventListener('change', (e) => {
+    const picked = e.target.value;
+
+    state.colour = picked;
+    localStorage.setItem('ob_colour', picked);
+
+    applyAccentColour(picked, 'theme');
+
+    document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => {
+      s.classList.remove('selected');
+    });
+
+    const pickerSwatch = document.querySelector('.colour-picker-swatch');
+    if (pickerSwatch) pickerSwatch.classList.add('selected');
+  });
+}
 
 // движок в настройках
 document.querySelectorAll('.s-engine-btn').forEach(btn => {
@@ -564,6 +747,11 @@ document.querySelectorAll('.s-engine-btn').forEach(btn => {
 
       form.appendChild(inp);
       bar.appendChild(form);
+      const savedT = localStorage.getItem('ob_transparency');
+      if (savedT) applyTransparency(savedT);
+
+      const savedBR = localStorage.getItem('ob_borderradius')
+      if (savedBR) applyBorderRadius(savedBR)
     });
   });
 });
@@ -583,14 +771,43 @@ if (settingsCitySave) {
 const colourReset = document.getElementById('colour-reset');
 if (colourReset) {
   colourReset.addEventListener('click', () => {
-    state.colour = '#ffffff';
-    localStorage.setItem('ob_colour', '#ffffff');
-    applyAccentColour('#ffffff');
+    const defaultColour = '#ffffff';
 
-    document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => s.classList.remove('selected'));
+    state.colour = defaultColour;
+    localStorage.setItem('ob_colour', defaultColour);
+
+    // 👇 ВАЖНО
+    applyAccentColour(defaultColour, 'default');
+
+    const colourInput = document.getElementById('colour-input');
+    if (colourInput) colourInput.value = defaultColour;
+
+    document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => {
+      s.classList.remove('selected');
+    });
 
     const defaultSwatch = document.querySelector('#settings-panel [data-colour="#ffffff"]');
     if (defaultSwatch) defaultSwatch.classList.add('selected');
+  });
+}
+
+const transparencySave = document.getElementById('settings-transparency-save');
+
+if (transparencySave) {
+  transparencySave.addEventListener('click', () => {
+    const transparencyInput = document.getElementById('settings-transparency');
+
+if (transparencyInput) {
+  transparencyInput.addEventListener('input', () => {
+    const value = transparencyInput.value;
+    applyTransparency(value);
+    localStorage.setItem('ob_transparency', value);
+  });
+}
+
+    const value = transparencyInput.value;
+    localStorage.setItem('ob_transparency', value);
+    applyTransparency(value);
   });
 }
 
@@ -656,3 +873,86 @@ loadWallpaperFromDB().then(dataUrl => {
     if (app) app.style.backgroundImage = `url(${dataUrl})`;
   }
 });
+
+const savedTransparency = localStorage.getItem('ob_transparency');
+
+if (savedTransparency) {
+  applyTransparency(savedTransparency);
+} else {
+  applyTransparency(15);
+}
+
+applyAllBorderRadiusSettings();
+
+let securityMode = localStorage.getItem('ob_security') === '1';
+
+function applySecurityMode() {
+  document.querySelectorAll('.search-form input').forEach(el => {
+    el.type = securityMode ? 'password' : 'text';
+  });
+
+  const stars = document.querySelectorAll('.btn-mode .star');
+  stars.forEach((star, i) => {
+    star.style.display = securityMode ? 'inline' : 'none';
+  });
+
+  const btnMode = document.querySelector('.btn-mode');
+  if (btnMode) {
+    btnMode.style.background = securityMode ? 'rgba(255,255,255,0.15)' : '';
+  }
+
+  // показываем цифры если режим выключен
+  let nums = document.querySelector('.btn-mode-nums');
+  if (!securityMode) {
+    if (!nums) {
+      nums = document.createElement('span');
+      nums.className = 'btn-mode-nums';
+      nums.textContent = '1 2 3 4 5 6';
+      nums.style.cssText = 'font-size:12px; font-family: Jost; font-weight: 600; text-align:center; align-items:center; letter-spacing:2px; color:rgb(255, 255, 255);';
+      document.querySelector('.btn-mode').appendChild(nums);
+    }
+    nums.style.display = 'inline';
+  } else {
+    if (nums) nums.style.display = 'none';
+  }
+}
+
+const btnMode = document.querySelector('.btn-mode');
+if (btnMode) {
+  applySecurityMode();
+
+  btnMode.addEventListener('click', () => {
+    securityMode = !securityMode;
+    localStorage.setItem('ob_security', securityMode ? '1' : '0');
+    applySecurityMode();
+  });
+}
+
+const themeBox = document.querySelector('.theme-store-box');
+const themeModal = document.getElementById('theme-modal');
+
+if (themeBox && themeModal) {
+  themeBox.addEventListener('click', () => {
+    themeModal.classList.add('open');
+  });
+}
+
+themeModal.addEventListener('click', (e) => {
+  if (e.target === themeModal) {
+    themeModal.classList.remove('open');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    themeModal.classList.remove('open');
+  }
+});
+
+const themeClose = document.querySelector('.theme-x');
+
+if (themeClose && themeModal) {
+  themeClose.addEventListener('click', () => {
+    themeModal.classList.remove('open');
+  });
+}

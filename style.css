@@ -17,7 +17,7 @@ html, body {
  
 #onboarding {
   position: fixed; inset: 0; background: #111;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column;  
   align-items: center; justify-content: center;
   z-index: 999; transition: opacity 0.6s ease;
 }
@@ -60,10 +60,10 @@ html, body {
 .colour-swatch {
   width: 38px; height: 38px; border-radius: 50%;
   cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.15s, border-color 0.15s;
+  transition: transform 0.3s ease; /* плавная анимация */
 }
-.colour-swatch:hover { transform: scale(1.15); }
-.colour-swatch.selected { border-color: white; transform: scale(1.15); }
+.colour-swatch:hover { transform: translateY(-3px); /* поднимается вверх */ }
+.colour-swatch.selected { border-color: white; transform: translateY(-3px); /* поднимается вверх */ }
 
 /* Engine toggle */
 .engine-row {
@@ -103,7 +103,7 @@ html, body {
   border: 1px solid rgba(255,255,255,0.3);
   background: rgba(255,255,255,0.1);
   color: #fff;
-  font-family: "Google Sans Flex", sans-serif;
+  font-family: "Google Sans Flex", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -192,11 +192,11 @@ html, body {
 .search-bar input {
   padding: 10px 16px; border-radius: 24px; border: none;
   font-size: 15px; width: 220px;
-  background: rgba(255,255,255,0.1); color: white; outline: none;
+  background: rgba(255, 255, 255, 0.333); color: white; outline: none;
 }
 .search-bar button {
   padding: 10px 18px; border-radius: 24px; border: none;
-  background: rgba(255,255,255,0.15); color: white;
+  background: #ffffff26; color: white;
   cursor: pointer; font-size: 14px;
 }
 .search-bar button:hover { background: rgba(255,255,255,0.25); }
@@ -211,7 +211,7 @@ html, body {
   gap: 6px; cursor: pointer; position: relative; width: 80px;
 }
 .site-icon {
-  width: 56px; height: 56px; border-radius: 14px;
+  width: 50px; height: 50px; border-radius: 15px;
   background: rgba(255,255,255,0.1);
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; text-decoration: none; color: white; transition: background 0.2s;
@@ -239,8 +239,8 @@ html, body {
 .site-card:hover .delete-btn { display: flex; }
  
 #add-btn {
-  width: 56px; 
-  height: 56px; 
+  width: 50px; 
+  height: 50px; 
   border-radius: 14px;
   background: rgba(255,255,255,0.08);
   border: 2px dashed rgba(255,255,255,0.25);
@@ -250,6 +250,7 @@ html, body {
   align-items: center; 
   justify-content: center; 
   transition: all 0.2s;
+  caret-color: transparent;
 }
 #add-btn:hover { background: rgba(255,255,255,0.15); color: white; }
  
@@ -372,7 +373,7 @@ html, body {
   width:100%;
   height: 100%;
   border-radius: 15px;
-  font-family: "poppins", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* ── SETTINGS BUTTON ── */
@@ -405,6 +406,7 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 300;
+  isolation: isolate;
 }
 #settings-panel.open { 
   display: block; 
@@ -420,7 +422,6 @@ html, body {
   top: 0; right: 0; bottom: 0;
   width: 320px;
   background: #00000050;
-  border-left: 1px solid rgba(255,255,255,0.08);
   padding: 36px 28px;
   display: flex;
   flex-direction: column;
@@ -428,7 +429,7 @@ html, body {
   overflow-y: auto;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
 #settings-panel.open #settings-drawer {
   transform: translateX(0);
@@ -453,12 +454,28 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  margin-top: 21px;
+}
+
+.settings-section-t {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 5px;
 }
 
 .fonts-w {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.fonts-f {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: -40px;  /* двигает вверх */
 }
 
 .settings-label {
@@ -474,6 +491,18 @@ html, body {
 }
 
 .settings-label-w {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  font-family: "Jost", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;;
+  font-weight: 400;
+  text-align: center;
+  position: relative;
+  bottom: 10px;
+}
+
+.settings-label-t {
   font-size: 11px;
   letter-spacing: 0.12em;
   color: rgba(255,255,255,0.3);
@@ -518,6 +547,11 @@ html, body {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: transform 0.3s ease;
 }
 
 .colour-picker-swatch input[type="color"] {
@@ -529,6 +563,7 @@ html, body {
   height: 100%;
   border: none;
   padding: 0;
+  z-index: 10;
 }
 
 #colour-input {
@@ -581,7 +616,7 @@ html, body {
 }
 
 .c-w {
-    font-size: 11px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   color: rgba(255,255,255,0.3);
   text-transform: uppercase;
@@ -598,16 +633,410 @@ html, body {
 }
 
 .p-u-w {
-  font-size: 12px;
+  font-size: 11px;
   font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
   color: #4f4f4f;
   text-decoration: none;
+  position: relative;
 }
 
 .p-u-w-g {
-  font-size: 12px;
+  font-size: 11px;
   font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   position: relative;
   left: 115px;
+  position: relative;
+  bottom:5px;
+}
+
+:root {
+  --accent-colour: #ffffff;
+}
+
+  #settings-transparency {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    outline: none;
+    border: none;
+    padding: 0;
+    top: 21px;
+   }
+
+  #settings-transparency::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent-colour);
+    border: none;
+    cursor: pointer;
+  }
+
+  #settings-transparency::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent-colour);
+    border: none;
+    cursor: pointer;
+  }
+
+  #settings-transparency::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Border-Radius Changer */
+.settings-br-c {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.settings-bor-cha {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  font-family: "Jost", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;;
+  font-weight: 400;
+  text-align: center;
+  position: relative;
+  bottom: 10px;
+}
+
+#settings-borderradius {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+#settings-borderradius::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-borderradius::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-borderradius::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-mode {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.security-mode {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  font-family: "Jost", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.security-mode-m {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.info {
+  position: relative;
+  top: 2px;
+  left: 5px;
+}
+
+.github-logo {
+  position: relative; top: 3px; left: 2px;
+  width: 15px; height: 15px;
+  transition: transform 0.3s ease; 
+}
+
+.github-logo {
+  
+}
+
+/* theme store */
+
+.theme-store-box {
+  position: absolute;
+  top: 35px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1px;
+}
+
+.theme-store {
+  width: 24px; height:24px;
+}
+
+.theme-text{
+  font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+  font-weight: 700;
+  text-align: center;
+  font-size: 12px;
+}
+
+#theme-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+#theme-modal.open {
+  display: flex;
+}
+
+/* theme box size/style */
+.theme-modal-box {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 16px;
+  color: white;
+  height: 600px;
+  width: 1100px;
+  align-items: center;
+  position: relative;
+  max-height: 80vh;   /* ограничение по высоте */
+  overflow-y: auto;   /* включает прокрутку */
+}
+
+.theme-x {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  color: #e93f3c;
+  transition: 0.2s;
+}
+
+.theme-x:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.theme-card {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-name {
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.theme-item-green:hover {
+    color: #7d926c;
+}
+
+.theme-item-forest:hover {
+    color: #995c38;
+}
+
+.theme-item-park:hover {
+    color: #a43692;
+}
+
+.theme-item-anon:hover {
+    color: #010101;
+}
+
+.theme-item-firefox:hover {
+    color: #ff6b18;
+}
+
+.theme-item-apple:hover {
+    color: #ffffff96;   
+}
+
+.theme-item-window:hover {
+    color: #0078d4;
+}
+
+.theme-item-linux:hover {
+    color: #318318;
+}
+
+.theme-item-quotes:hover {
+    color: #ffffff96;
+}
+
+.theme-item-Duck:hover {
+   color: #FFD000;
+}
+
+.theme-item-uk:hover .theme-name {
+  background: linear-gradient(to bottom, #0057B7 50%, #FFD700 50%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-item-slash {
+  grid-column: 1 / -1; /* занимает всю ширину грида */
+  text-align: center;
+}
+
+.theme-name-text {
+  width: 100%;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+}
+
+/* Border-Radius Panel */
+.border-picker-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.border-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform-origin: center;
+  position: relative;
+  bottom: 9px;
+}
+
+.border-picker-header.open .border-arrow {
+  transform: rotate(-180deg);
+}
+
+.border-target-wrap {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.25s ease;
+  margin-bottom: 0;
+}
+
+.border-target-wrap.open {
+  max-height: 260px;
+  opacity: 1;
+  margin-bottom: 10px;
+}
+
+.border-target-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.border-target-btn {
+  width: 100%;
+  padding: 10px 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 14px;
+  font-family: "Jost", sans-serif;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.border-target-btn:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+.border-target-btn.active {
+  background: rgba(255,255,255,0.18);
+}
+
+/* wallpapers (github) */
+
+.github-logo-wall {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: 3px;
+  transition: transform 0.3s ease; 
+}
+
+.github-logo-wall:hover {
+  cursor: pointer;
+  transform: translateY(-3px);  
+}
+
+.theme-name-p {
+  font-family: "Google Sans Flex", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 200;
+  font-size: 12px
 }
