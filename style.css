@@ -54,8 +54,12 @@ html, body {
  
 /* Colour picker */
 .colour-row {
-  display: flex; gap: 14px; justify-content: center;
-  flex-wrap: wrap; margin-bottom: 12px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
 }
 
 .colour-row-f {
@@ -185,6 +189,7 @@ html, body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #111; /* fallback пока грузится обои */
 }
 #app.visible { display: flex; }
  
@@ -201,7 +206,7 @@ html, body {
   display: flex; gap: 8px;
   position: relative;
   bottom: 20px;
-  flex-wrap: wrap; justify-content: center;
+  flex-wrap: wrap; justify-content: center; 
 }
 .search-bar input {
   padding: 10px 16px; border-radius: 24px; border: none;
@@ -277,12 +282,19 @@ html, body {
 #modal.open { display: flex; }
  
 #modal-box {
-  background: #00000098; 
-  border-radius: 16px; 
+  background: rgba(67, 67, 67, 0ч);
+  border-radius: 16px;
   padding: 28px;
-  width: 320px; 
-  display: flex; 
-  flex-direction: column; gap: 12px;
+  width: 320px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 #modal-box input {
   padding: 10px 14px; border-radius: 10px;
@@ -293,10 +305,14 @@ html, body {
 .modal-buttons { display: flex; gap: 8px; margin-top: 4px; }
 .modal-buttons button {
   flex: 1; padding: 10px; border-radius: 10px;
-  border: none; cursor: pointer; font-size: 14px;
+  border: none; cursor: pointer; font-size: 14px; font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 500;
 }
 #btn-save { background: #ffffff; color: rgb(0, 0, 0); }
-#btn-cancel { background: rgba(255,255,255,0.1); color: white; }
+#btn-cancel { 
+  background: rgba(255,255,255,0.1); 
+  color: white;
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 500;
+}
 
 #custom-modal {
   display: none;
@@ -309,13 +325,19 @@ html, body {
 }
 
 #custom-modal-box {
-  background: #272727;
+  background: rgba(67, 67, 67, 0.55);
   border-radius: 16px;
   padding: 28px;
   width: 320px;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 #custom-modal-box input {
@@ -334,20 +356,21 @@ html, body {
 #custom-cancel {
   background: rgba(255,255,255,0.1);
   color: white;
-  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 500;
 }
 
 #custom-save {
-  background: #111213;
-  color: white;
-  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+   font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-weight: 500;
 }
  
 .link-g {
   width: 53px;
   height: 53px;
   position: relative;
-  right: 40px;
+  right: 100px;
   top: 55px;
   transition: transform 0.3s ease; /* плавная анимация */
 }
@@ -356,7 +379,16 @@ html, body {
   width: 48px;
   height: 48px;
   position: relative;
-  left: 40px;
+  left: 0px;
+  transition: transform 0.3s ease; /* плавная анимация */
+}
+
+.link-ko {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  right: -100px;
+  bottom: 50px;
   transition: transform 0.3s ease; /* плавная анимация */
 }
 
@@ -365,6 +397,10 @@ html, body {
 }
 
 .link-m:hover {
+  transform: translateY(-3px); /* поднимается вверх */
+}
+
+.link-ko:hover {
   transform: translateY(-3px); /* поднимается вверх */
 }
 
@@ -858,17 +894,34 @@ html, body {
 }
 
 #theme-modal {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0);
   z-index: 9999;
+
+  display: flex;
   align-items: center;
   justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.28s ease,
+    background 0.28s ease,
+    visibility 0s linear 0.28s;
 }
 
 #theme-modal.open {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.4);
+  transition:
+    opacity 0.28s ease,
+    background 0.28s ease,
+    visibility 0s linear 0s;
 }
 
 /* theme box size/style */
@@ -877,12 +930,22 @@ html, body {
   padding: 20px;
   border-radius: 16px;
   color: white;
-  height: 600px;
+  height: 700px;
   width: 1100px;
-  align-items: center;
   position: relative;
-  max-height: 80vh;   /* ограничение по высоте */
-  overflow-y: auto;   /* включает прокрутку */
+  max-height: 80vh;
+  overflow-y: auto;
+
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#theme-modal.open .theme-modal-box {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .theme-x {
@@ -1074,6 +1137,162 @@ html, body {
 
 .theme-item-anon:hover {
     color: #0cad00;
+}
+
+.theme-item-d-love:hover {
+  color: #5a6cc6;
+}
+
+.theme-item-l-love:hover {
+  color: #7d90d0;
+}
+
+.theme-item-boy:hover {
+    color: #833bc9;
+}
+
+.theme-item-girl:hover {
+    color: #e4712a;
+}
+
+.theme-item-Abstract-1:hover {
+  color: #5cb8f3;
+}
+
+.theme-item-Abstract-2:hover {
+  color: #faee3d;
+}
+
+.theme-item-k-pop:hover {
+  color: #940c0e;
+}
+
+.theme-item-mountains:hover {
+  color: #adadad;
+}
+
+.theme-item-Geometric:hover {
+  color: #a25040;
+}
+
+.theme-item-Geometric-m:hover {
+  color: #61bd7e;
+}
+
+.theme-item-geo:hover {
+  color: #ae8ebc;
+}
+
+.theme-item-geom:hover {
+  color: #a48cc7;
+}
+
+.theme-item-gold:hover {
+  color: #b48224;
+}
+
+.theme-item-m-build:hover {
+  color: #4f84f4;
+}
+
+.theme-item-build:hover {
+  color: #dfcbee;
+}
+
+.theme-item-anime-1:hover {
+  color: #29364d;
+}
+
+.theme-item-anime-2:hover {
+  color: #2b294e;
+}
+
+.theme-item-anime-3:hover {
+  color: #282737;
+}
+
+.theme-item-anime-4:hover {
+  color: #050505;
+}
+
+.theme-item-anime-5:hover {
+  color: #234b4f;
+}
+
+.theme-item-anime-6:hover {
+  color: #71314a;
+}
+
+.theme-item-anime-7:hover {
+  color: #5d2b32;
+}
+
+.theme-item-anime-8:hover {
+  color: #5c3335;
+}
+
+.theme-item-anime-9:hover {
+  color: #ee8b33;
+}
+
+.theme-item-anime-10:hover {
+  color: #ec735f;
+}
+
+.theme-item-anime-11:hover {
+  color: #9c0e24;
+}
+
+.theme-item-anime-12:hover {
+  color: #b52f33;
+}
+
+.theme-item-anime-13:hover {
+  color: #468fb8;
+}
+
+.theme-item-anime-14:hover {
+  color: #6a5d89;
+}
+
+.theme-item-ps:hover {
+  color: #4663a4;
+}
+
+.theme-item-car:hover {
+  color: #4f4d53;
+}
+
+.theme-item-wave:hover {
+  color: #b520ce;
+}
+
+.theme-item-retro:hover {
+  color: #e788f5;
+}
+
+.theme-item-mount:hover {
+  color: #e12c6c;
+}
+
+.theme-item-sun:hover {
+  color: #3770f5;
+}
+
+.theme-item-white:hover {
+  color: #aec6d0;
+}
+
+.theme-item-neon:hover {
+  color: #741687;
+}
+
+.theme-item-yellow:hover {
+  color: #f1b31b;
+}
+
+.theme-item-pink-ast:hover {
+  color: #ce6f64;
 }
 
 .theme-item-uk:hover .theme-name {
@@ -1324,4 +1543,314 @@ html, body {
     bottom: 16px;
     right: 16px;
   }
+}
+
+.custom-colour-box{
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+}
+
+#hex-input{
+  position: absolute;
+  top: 50px;
+  right:-40px;
+  translate: -50% 0;
+
+  width: 88px;
+  height: 34px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  caret-color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-family: 'Jost', sans-serif;
+  z-index: 5;
+}
+
+#hex-input::placeholder{
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#colour-reset{
+  position: relative;
+  top: 0;
+}
+
+/* Clock size */  
+
+.settings-section-t-c {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 5px;
+  margin-top:25px;
+}
+
+#settings-clock-size, #settings-date-size {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+#settings-clock-size-text, #settings-date-size-text{
+  width:120px;
+  height:34px;
+  margin-top:10px;
+
+  border:none;
+  outline:none;
+  border-radius:10px;
+
+  background:rgba(255,255,255,0.08);
+  color:white;
+  text-align:center;
+
+  font-size:14px;
+  font-family:'Jost',sans-serif;
+}
+
+
+#settings-clock-size::-webkit-slider-thumb, #settings-date-size::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-clock-size::-moz-range-thumb, #settings-date-size::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-clock-size::-moz-range-track, #settings-date-size::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-date-format,
+#settings-date-separator{
+  width: 100%;
+  height: 38px;
+  outline: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.10);
+  color: white;
+  font-size: 14px;
+  font-family: 'Jost', sans-serif;
+  text-align: center;
+  border: 1px solid rgb(255, 255, 255);
+}
+
+#settings-date-format option,
+#settings-date-separator option{
+  background:#1f1f1f;
+  color:#ffffff;
+}
+
+#settings-date-format:-moz-focusring,
+#settings-date-separator:-moz-focusring{
+  color: transparent;
+  text-shadow: 0 0 0 #ffffff;
+}
+
+#settings-date-separator{
+  margin-top: 8px;
+}
+
+#weather-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+#weather-modal.open{
+  display:flex;
+}
+
+#weather-modal-box{
+  background:rgba(67,67,67,0.55);
+  border-radius:16px;
+  padding:28px;
+  width:320px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+#weather-city-input{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  color:white;
+  outline:none;
+  text-align:center;
+  font-family:'Manrope',sans-serif;
+}
+
+#weather-widget{
+  position:absolute;
+  top:270px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-family:'Jost',sans-serif;
+  text-align:center;
+  cursor:grab;
+  user-select:none;
+}
+
+#weather-widget.locked{
+  cursor:default;
+}
+
+#weather-lock {
+  position: absolute;
+  left: 50%; right: 50%;
+right: auto;
+
+  width: 48px;
+  height: 48px;
+
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  line-height: 1;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+#weather-widget:hover #weather-lock{
+  opacity:1;
+  pointer-events:auto;
+  transform:scale(1);
+}
+
+/* Weather size changer */
+
+#settings-weather-size {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+#settings-weather-size::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-weather-size::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-weather-size::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-weather-size-text {
+  width: 120px;
+  height: 34px;
+  margin-top: 10px;
+
+  border: none;
+  outline: none;
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.08);
+  color: white;
+  text-align: center;
+
+  font-size: 14px;
+  font-family: 'Jost', sans-serif;
+}
+
+/* чтобы кнопки в weather modal выглядели как остальные */
+#weather-cancel,
+#weather-save {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+}
+
+#weather-cancel {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+#weather-save {
+  background: #ffffff;
+  color: black;
+}
+
+#weather-cancel:hover,
+#weather-save:hover {
+  opacity: 0.85;
 }

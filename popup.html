@@ -85,11 +85,14 @@
         <button class="btn-finish" id="btn-finish">Let's see →</button>
       </div>
       <span class="links">our links</span>
-      <a href="https://github.com/markuifoxex/MarkUI.FireFox">
-        <img class="link-g" src="/Icons/github.png" alt="GitHub">
+      <a href="https://github.com/markuifoxex/MonoUI.FireFox">
+        <img class="link-g" src="/Icons/github.png" alt="GitHub" Title="GitHub">
       </a>
-      <a href="https://www.instagram.com/markui.fox.ex">
-        <img class="link-m" src="/Icons/insta.png" alt="Instagram">
+      <a href="https://www.instagram.com/monoui.firefox">
+        <img class="link-m" src="/Icons/insta.png" alt="Instagram" title="Instagram">
+      </a>
+      <a href="https://ko-fi.com/jasonleee">  
+        <img class="link-ko" src="/Icons/Ko-Fi.png" alt="Instagram" title="Support Me">
       </a>
     </div>
   </div>
@@ -109,6 +112,7 @@
 
 <!-- ── MAIN APP ── -->
 <div id="app">
+  <div id="date">Monday, 20 April</div>
   <div id="clock">00:00</div>
   <div class="search-bar" id="search-bar"></div>
   <div id="sites-grid"></div>
@@ -146,7 +150,7 @@
 <div id="settings-panel">
   <div id="settings-overlay"></div>
   <div id="settings-drawer">
-    <h2>settings</h2>
+    <h2 class="settingg">settings</h2>
 
     <div class="theme-store-box" id="theme-button" style="cursor: pointer;">
     <img src="/Icons/layout.png" class="theme-store" title="Themes/Wallpapers Store">
@@ -164,13 +168,15 @@
         <div class="colour-swatch" data-colour="#c77dff" style="background:#c77dff;"></div>
         <div class="colour-swatch" data-colour="#ff6b6b" style="background:#ff6b6b;"></div>
 
-          <div class="colour-swatch colour-picker-swatch" title="Custom colour">
-            <img src="/Icons/pick.png" class="pick" width="34" height="34" style="pointer-events:none;">
-          <input type="color" id="colour-input" value="#ffffff">          
-        </div>
-        <img src="Icons/reset.png" id="colour-reset" 
-       style="width:35px; height:35px; cursor:pointer;" 
-       title="Reset to default">
+          <div class="custom-colour-box">
+  <div class="colour-swatch colour-picker-swatch" title="Custom colour">
+    <img src="/Icons/pick.png" class="pick" width="34" height="34" style="pointer-events:none;">
+    <input type="color" id="colour-input" value="#ffffff">
+  </div>
+
+    <input type="text" id="hex-input" placeholder="#ffffff" maxlength="7">
+      </div>
+        <img src="Icons/reset.png" id="colour-reset" style="width:35px; height:35px; cursor:pointer;" title="Reset to default">
       </div>
     </section>
 
@@ -217,7 +223,7 @@
   </div>
 
   <div class="border-picker-header" id="border-picker-toggle">
-    <p class="settings-bor-cha">Border-Radius changer</p>
+    <p class="settings-bor-cha">Corner changer</p>
     <span class="border-arrow" id="border-arrow" title="more options">˄</span>
   </div>
 
@@ -226,12 +232,12 @@
 </section>
 
 <div class="fonts-w"> 
-  <p class="c-w">Wallpaper Changer</p>
+  <p class="c-w">Wallpaper changer</p>
   <input type="file" id="wallpaper-input" accept="image/*" style="display:none;">
   <label for="wallpaper-input" class="btn-finish" style="text-align:center; cursor:pointer; position: relative; bottom: 10px; border-radius: 10px;">Choose Wallpaper</label>
   <p class="p-u-w">
   All wallpapers you can find on 
-  <a href="https://github.com/markuifoxex/MarkUI.FireFox" target="_blank">
+  <a href="https://github.com/markuifoxex/MonoUI.FireFox" target="_blank">
     <img src="/Icons/github.png" class="github-logo" width="15" height="15" style="position: relative; top: 3px;" alt="GitHub">
   </a>
 </p>
@@ -249,6 +255,55 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
   </button>
 </div>
 
+<section class="settings-section-t-c">
+  <p class="settings-label-t">Date changer</p>
+
+  <select id="settings-date-format">
+    <option value="ddmmyyyy">DD.MM.YYYY</option>
+    <option value="mmddyyyy">MM.DD.YYYY</option>
+    <option value="yyyyddmm">YYYY.DD.MM</option>  
+    <option value="yyyymmdd">YYYY.MM.DD</option>
+    <option value="day_mon_short">Mon 20 Apr</option>
+    <option value="dd_mon_short">20 Apr</option>
+    <option value="mon_dd_short">Apr 20</option>
+  </select>
+
+  <select id="settings-date-separator">
+    <option value=".">.</option>
+    <option value="/">/</option>
+    <option value="|">|</option>
+  </select>
+
+  <button id="settings-date-save" class="btn-finish">save</button>
+</section>
+
+<section class="settings-section-t-c">
+  <p class="settings-label-t">Date size</p>
+  <input id="settings-date-size" type="range" min="1" max="220" value="18">
+  <input id="settings-date-size-text" type="text" placeholder="Default=18px" maxlength="6">
+  <button id="settings-date-size-save" class="btn-finish">save</button>
+</section>
+
+<section class="settings-section-t-c">
+  <p class="settings-label-t">Clock size</p>
+  <input id="settings-clock-size" type="range" min="1" max="220" value="75">
+  <input id="settings-clock-size-text" type="text" placeholder="Default=75px" maxlength="6">
+  <button id="settings-clock-size-save" class="btn-finish">save</button>
+</section>
+
+<section class="settings-section-t-c">
+  <p class="settings-label-t">Weather widget</p>
+
+  <button id="add-weather-widget" class="btn-finish">Add weather widget +</button>
+
+  <p class="settings-label-t" style="margin-top:18px;">Weather size</p>
+
+  <input id="settings-weather-size" type="range" min="1" max="220" value="32">
+  <input id="settings-weather-size-text" type="text" placeholder="Default=32px" maxlength="6">
+
+  <button id="settings-weather-size-save" class="btn-finish">save</button>
+</section>
+
 </div>
   </div>
 </div>
@@ -262,7 +317,8 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
 
    <div class="theme-item-slash">
     <p class="theme-name-text">────────────────────────────────────themes────────────────────────────────────</p>
-    <p class="theme-name-soon" style="width: 100%;font-size: 13px;font-weight: 400; font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">─coming soon🥲─</p>
+    <p class="theme-name-soon" style="width: 100%;font-size: 13px;font-weight: 400; font-family: 'Poppins', system-ui, -apple-system,BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">─coming soon🥲─</p>
   </div>   
 
   <div class="theme-item-slash">
@@ -270,7 +326,7 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
     
   <p class="theme-name-p">
     All wallpaper in 4k you can find on
-    <a href="https://github.com/markuifoxex/MarkUI.FireFox" target="_blank">
+    <a href="https://github.com/markuifoxex/MonoUI.FireFox" target="_blank">
       <img src="Icons/githublogo.png" class="github-logo-wall" alt="GitHub">
     </a>
   </p>
@@ -506,18 +562,313 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
     <p class="theme-name">Anonymous #4</p>  
   </div>
   
-  <div class="theme-item-anon">
+  <div class="theme-item-d-love">
     <img src="Wallpaper/Theme53.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
     <p class="theme-name">Dark love💜</p>  
   </div>
   
-  <div class="theme-item-anon">
+  <div class="theme-item-l-love">
     <img src="Wallpaper/Theme54.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
     <p class="theme-name">Light love🩵</p>  
   </div>
 
+  <div class="theme-item-boy">
+    <img src="Wallpaper/Theme55.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Lo-Fi Boy👦🏻</p>  
+  </div>
+
+  <div class="theme-item-girl">
+    <img src="Wallpaper/Theme56.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Lo-Fi Girl👧🏻</p>  
+  </div>
+
+  <div class="theme-item-Abstract-1">
+    <img src="Wallpaper/Theme57.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Abstract #1🖼️</p>  
+  </div>
+
+  <div class="theme-item-Abstract-2">
+    <img src="Wallpaper/Theme58.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Abstract #2🖼️</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme59.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Gaeul🟥</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme60.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Rei🟥</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme61.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Leeseo🟥</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme62.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">An Yujin🟥</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme63.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Jang Wonyoung🟥</p>  
+  </div>
+
+  <div class="theme-item-k-pop">
+    <img src="Wallpaper/Theme64.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Liz🟥</p>  
+  </div>
+
+  <div class="theme-item-mountains">
+    <img src="Wallpaper/Theme65.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Snow Mountains #1⛰️</p>  
+  </div>
+
+  <div class="theme-item-mountains">
+    <img src="Wallpaper/Theme66.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Snow Mountains #2⛰️</p>  
+  </div>
+
+  <div class="theme-item-Geometric-m">
+    <img src="Wallpaper/Theme67.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Geometric🟩</p>  
+  </div>
+
+  <div class="theme-item-Geometric">
+    <img src="Wallpaper/Theme68.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Geometric🟧</p>  
+  </div>
+
+  <div class="theme-item-geo">
+    <img src="Wallpaper/Theme69.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Purple Crystal🟪</p>  
+  </div>
+
+  <div class="theme-item-geom">
+    <img src="Wallpaper/Theme70.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Purple Circle🟣</p>  
+  </div>
+
+  <div class="theme-item-gold">
+    <img src="Wallpaper/Theme71.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Gold Crystal🟨</p>  
+  </div>
+
+  <div class="theme-item-gold">
+    <img src="Wallpaper/Theme72.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Gold Circle🟡</p>  
+  </div>
+
+  <div class="theme-item-build">
+    <img src="Wallpaper/Theme73.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Modern Build #1🏬</p>  
+  </div>
+
+  <div class="theme-item-m-build">
+    <img src="Wallpaper/Theme74.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Modern Build #2🏬</p>  
+  </div>
+
+  <div class="theme-item-anime-1">
+    <img src="Wallpaper/Theme75.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #1🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-2">
+    <img src="Wallpaper/Theme76.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #2🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-3">
+    <img src="Wallpaper/Theme77.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #3🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-4">
+    <img src="Wallpaper/Theme78.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #4🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-5">
+    <img src="Wallpaper/Theme79.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #5🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-6">
+    <img src="Wallpaper/Theme80.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #6🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-7">
+    <img src="Wallpaper/Theme81.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #7🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-8">
+    <img src="Wallpaper/Theme82.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #8🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-9">
+    <img src="Wallpaper/Theme83.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #9🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-10">
+    <img src="Wallpaper/Theme84.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #10🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-11">
+    <img src="Wallpaper/Theme85.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #11🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-12">
+    <img src="Wallpaper/Theme86.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #12🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-13">
+    <img src="Wallpaper/Theme87.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #13🏯</p>  
+  </div>
+
+  <div class="theme-item-anime-14">
+    <img src="Wallpaper/Theme88.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Anime #14 🏯</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme89.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #1🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme90.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #2🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme91.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #3🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme92.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #4🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme93.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #5🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme94.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #6🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme95.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #7🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme96.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #8🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme97.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #9🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme98.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #10🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme99.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #11🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme100.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #12🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme101.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #13🚗</p>  
+  </div>
+
+  <div class="theme-item-car">
+    <img src="Wallpaper/Theme102.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Car #14🚗</p>  
+  </div>
+
+  <div class="theme-item-wave">
+    <img src="Wallpaper/Theme103.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">RetroWave🌊</p>  
+  </div>
+
+  <div class="theme-item-retro">
+    <img src="Wallpaper/Theme104.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">RetroNeon🟪</p>  
+  </div>
+
+  <div class="theme-item-mount">
+    <img src="Wallpaper/Theme105.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">RetroCar🚘</p>  
+  </div>
+
+  <div class="theme-item-sun">
+    <img src="Wallpaper/Theme106.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">RetroMountains🟪⛰️</p>   
+  </div>
+
+  <div class="theme-item-white">
+    <img src="Wallpaper/Theme107.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">White Astronaut🧑🏻‍🚀</p>  
+  </div>
+
+  <div class="theme-item-neon">
+    <img src="Wallpaper/Theme108.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Neon Astronaut🧑🏻‍🚀🟪</p>  
+  </div>
+
+  <div class="theme-item-yellow">
+    <img src="Wallpaper/Theme109.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Yellow Astronaut🧑🏻‍🚀🟨</p>  
+  </div>
+
+  <div class="theme-item-pink-ast">
+    <img src="Wallpaper/Theme110.png" class="theme-card" title="Thanks: https://4kwallpapers.com">
+    <p class="theme-name">Pink Astronaut🧑🏻‍🚀💗</p>   
+  </div>
+
   </div>
  </div>
+</div>
+
+<div id="weather-modal">
+  <div id="weather-modal-box">
+    <input id="weather-city-input" type="text" placeholder="Type city">
+    <div class="modal-buttons">
+      <button id="weather-cancel">cancel</button>
+      <button id="weather-save">save</button>
+    </div>
+  </div>
+</div>
+
+<div id="weather-widget" style="display:none;">
+  <button id="weather-lock" title="Lock/Unlock">🔓</button>
+  <div id="weather-content"></div>
 </div>
 
 <script src="popup.js"></script>  

@@ -20,7 +20,7 @@
 },
 
  "action": {
-    "default_popup": "panel.html",
+    "default_popup": "Panel.html",
     "default_icon": {
       "48": "Icons/Icon48.png"
     }
@@ -32,6 +32,11 @@
     "bookmarks",
     "tabs"
   ],
+
+  "host_permissions": [
+  "https://api.open-meteo.com/*",
+  "https://geocoding-api.open-meteo.com/*"
+],
 
   "icons": {
     "128": "Icons/Icon128.png"
