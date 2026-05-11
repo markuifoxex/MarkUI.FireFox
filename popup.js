@@ -86,16 +86,16 @@
     });
   }
 
-  // ── COLOUR PICKER ──
-  document.querySelectorAll('.colour-swatch').forEach(sw => {
+  // ── COLOUR PICKER ──  
+  document.querySelectorAll('.colour-swatch, .colour-swatch-f').forEach(sw => {
     sw.addEventListener('click', () => {
       if (!sw.dataset.colour) return;
 
-      document.querySelectorAll('.colour-swatch').forEach(s => s.classList.remove('selected'));
+      document.querySelectorAll('.colour-swatch, .colour-swatch-f').forEach(s => s.classList.remove('selected'));
       sw.classList.add('selected');
       state.colour = sw.dataset.colour;
     });
-  }); 
+  });
 
   // ── CITY INPUT ──
   const showCityBtn = document.getElementById('show-city-input');
@@ -814,54 +814,310 @@ if (savedFont) {
     });
   });
 
-  const colourInput = document.getElementById('colour-input');
-  const hexInput = document.getElementById('hex-input');
+// ── CUSTOM COLOR PICKER ──
+(function() {
+  const pickerSwatch = document.querySelector('.colour-picker-swatch');
+  if (!pickerSwatch) return;
 
-  if (hexInput) {
+  // Создаём попап
+  const popup = document.createElement('div');
+  popup.id = 'custom-color-popup';
+  popup.innerHTML = `
+    <div id="ccp-gradient">
+      <div id="ccp-white"></div>
+      <div id="ccp-black"></div>
+      <div id="ccp-cursor"></div>
+    </div>
+    <div id="ccp-hue-wrap">
+      <input type="range" id="ccp-hue" min="0" max="360" value="0">
+    </div>
+    <div id="ccp-bottom">
+      <div id="ccp-preview"></div>
+      <input type="text" id="ccp-hex" maxlength="7" placeholder="#ffffff">
+      <button id="ccp-apply">apply</button>
+    </div>
+  `;
+  popup.style.cssText = `
+    display:none;
+    position:absolute;
+    z-index:9999;
+    background:rgba(30,30,30,0.98);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:14px;
+    padding:14px;
+    width:220px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.6);
+    left: -120px;
+    top: calc(100% + 8px);
+  `;
+
+  // Вставляем попап внутрь .custom-colour-box
+  const box = document.querySelector('.custom-colour-box');
+  if (box) {
+    box.style.position = 'relative';
+    box.appendChild(popup);
+  }
+
+  // Стили для элементов пикера
+  const style = document.createElement('style');
+  style.textContent = `
+    #ccp-gradient {
+      position: relative;
+      width: 192px;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    #ccp-white {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, #fff, transparent);
+    }
+    #ccp-black {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent, #000);
+    }
+    #ccp-cursor {
+      position: absolute;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 3px rgba(0,0,0,0.8);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      left: 100%; top: 0%;
+    }
+    #ccp-hue-wrap {
+      margin-top: 10px;
+    }
+    #ccp-hue {
+      -webkit-appearance: none;
+      width: 192px;
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(to right,
+        hsl(0,100%,50%), hsl(30,100%,50%), hsl(60,100%,50%),
+        hsl(90,100%,50%), hsl(120,100%,50%), hsl(150,100%,50%),
+        hsl(180,100%,50%), hsl(210,100%,50%), hsl(240,100%,50%),
+        hsl(270,100%,50%), hsl(300,100%,50%), hsl(330,100%,50%),
+        hsl(360,100%,50%));
+      outline: none;
+      border: none;
+      cursor: pointer;
+    }
+    #ccp-hue::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+    #ccp-hue::-moz-range-thumb {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+    #ccp-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    #ccp-preview {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+      background: #fff;
+    }
+    #ccp-hex {
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      padding: 4px 8px;
+      outline: none;
+      min-width: 0;
+    }
+    #ccp-apply {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      padding: 4px 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #ccp-apply:hover {
+      background: rgba(255,255,255,0.1);
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Состояние пикера
+  let hue = 0;
+  let saturation = 1;
+  let brightness = 1;
+
+  const gradientEl = document.getElementById('ccp-gradient');
+  const hueInput = document.getElementById('ccp-hue');
+  const cursor = document.getElementById('ccp-cursor');
+  const preview = document.getElementById('ccp-preview');
+  const hexInput = document.getElementById('ccp-hex');
+  const applyBtn = document.getElementById('ccp-apply');
+
+  function hsvToHex(h, s, v) {
+    let r, g, b;
+    const i = Math.floor(h / 60) % 6;
+    const f = h / 60 - Math.floor(h / 60);
+    const p = v * (1 - s);
+    const q = v * (1 - f * s);
+    const t = v * (1 - (1 - f) * s);
+    if (i === 0) { r=v; g=t; b=p; }
+    else if (i === 1) { r=q; g=v; b=p; }
+    else if (i === 2) { r=p; g=v; b=t; }
+    else if (i === 3) { r=p; g=q; b=v; }
+    else if (i === 4) { r=t; g=p; b=v; }
+    else { r=v; g=p; b=q; }
+    return '#' + [r,g,b].map(x => Math.round(x*255).toString(16).padStart(2,'0')).join('');
+  }
+
+  function hexToHsv(hex) {
+    const r = parseInt(hex.slice(1,3),16)/255;
+    const g = parseInt(hex.slice(3,5),16)/255;
+    const b = parseInt(hex.slice(5,7),16)/255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b);
+    const d = max - min;
+    let h = 0, s = max === 0 ? 0 : d/max, v = max;
+    if (d !== 0) {
+      if (max === r) h = ((g-b)/d + (g<b?6:0)) * 60;
+      else if (max === g) h = ((b-r)/d + 2) * 60;
+      else h = ((r-g)/d + 4) * 60;
+    }
+    return { h, s, v };
+  }
+
+  function updateUI() {
+    gradientEl.style.background = `hsl(${hue}, 100%, 50%)`;
+    const hex = hsvToHex(hue, saturation, brightness);
+    preview.style.background = hex;
+    hexInput.value = hex;
+
+    const oldHexInput = document.getElementById('hex-input');
+    if (oldHexInput) oldHexInput.value = hex;
+
+    cursor.style.left = (saturation * 192) + 'px';
+    cursor.style.top = ((1 - brightness) * 140) + 'px';
+  }
+
+  // Drag по градиенту
+  let dragging = false;
+  gradientEl.addEventListener('mousedown', (e) => {
+    dragging = true;
+    pickFromGradient(e);
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    pickFromGradient(e);
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+
+  function pickFromGradient(e) {
+    const rect = gradientEl.getBoundingClientRect();
+    const x = Math.max(0, Math.min(e.clientX - rect.left, 192));
+    const y = Math.max(0, Math.min(e.clientY - rect.top, 140));
+    saturation = x / 192;
+    brightness = 1 - y / 140;
+    updateUI();
+  }
+
+  // Hue слайдер
+  hueInput.addEventListener('input', () => {
+    hue = Number(hueInput.value);
+    updateUI();
+  });
+
+  // HEX инпут
   hexInput.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
-
-    let value = hexInput.value.trim();
-
-    if (!value.startsWith('#')) value = '#' + value;
-
-    const validHex = /^#[0-9A-Fa-f]{6}$/;
-
-    const oldError = document.getElementById('hex-error');
-    if (oldError) oldError.remove();
-
-    if (!validHex.test(value)) {
-
-      const err = document.createElement('p');
-      err.id = 'hex-error';
-      // text
-      err.textContent = 'Error. Type hex-color with "#"'; 
-
-      err.style.cssText = `
-        position:absolute;
-        top:88px;
-        left:50%;
-        transform:translateX(-70%);
-        color:rgba(255, 80, 80, 0.8);
-        font-size:11px;
-        white-space:nowrap;
-        font-family:Poppins,sans-serif; font-weight: 400;
-        letter-spacing:0.04em;
-      `;
-
-      document.querySelector('.custom-colour-box').appendChild(err);
-      return;
-    }
-
-    state.colour = value;
-    localStorage.setItem('ob_colour', value);
-
-    applyAccentColour(value, 'theme');
-
-    colourInput.value = value;
-    hexInput.value = value;
+    applyHex();
   });
-}
+
+  hexInput.addEventListener('blur', applyHex);
+
+  function applyHex() {
+    let val = hexInput.value.trim();
+    if (!val.startsWith('#')) val = '#' + val;
+    if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+
+    const { h, s, v } = hexToHsv(val);
+    hue = h;
+    saturation = s;
+    brightness = v;
+    hueInput.value = hue;
+    updateUI();
+  }
+
+  // Apply кнопка
+  applyBtn.addEventListener('click', () => {
+    const oldHexField = document.getElementById('hex-input');
+  if (oldHexField) {
+    oldHexField.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      let val = oldHexField.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (!/^#[0-9A-Fa-f]{6}$/.test(val)) return;
+      const { h, s, v } = hexToHsv(val);
+      hue = h; saturation = s; brightness = v;
+      hueInput.value = hue;
+      updateUI();
+      state.colour = val;
+      localStorage.setItem('ob_colour', val);
+      applyAccentColour(val, 'theme');
+      document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => s.classList.remove('selected'));
+    });
+  }
+    const hex = hsvToHex(hue, saturation, brightness);
+    state.colour = hex;
+    localStorage.setItem('ob_colour', hex);
+    applyAccentColour(hex, 'theme');
+
+    // Снимаем selected со всех свотчей
+    document.querySelectorAll('#settings-panel .colour-swatch').forEach(s => s.classList.remove('selected'));
+
+    popup.style.display = 'none';
+  });
+
+  // Открытие/закрытие попапа
+  pickerSwatch.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = popup.style.display === 'block';
+    popup.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+      // Синхронизируем с текущим цветом
+      const { h, s, v } = hexToHsv(state.colour || '#ffffff');
+      hue = h; saturation = s; brightness = v;
+      hueInput.value = hue;
+      updateUI();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!popup.contains(e.target) && e.target !== pickerSwatch) {
+      popup.style.display = 'none';
+    }
+  });
+
+  updateUI();
+})();
 
   // движок в настройках
   document.querySelectorAll('.s-engine-btn').forEach(btn => {
