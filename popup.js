@@ -256,6 +256,11 @@ if (clock) clock.style.color = colour;
 const date = document.getElementById('date');
 if (date) date.style.color = colour;
 
+const weatherTemp = document.querySelector('.weather-temp');
+    const weatherCity = document.querySelector('.weather-city');
+    if (weatherTemp) weatherTemp.style.color = colour;
+    if (weatherCity) weatherCity.style.color = colour;
+
     document.querySelectorAll('.search-form input').forEach(el => {
       el.style.borderColor = colour;
       el.style.color = colour;  
@@ -2031,7 +2036,9 @@ function applyWeatherLock() {
   if (!weatherWidget || !weatherLock) return;
 
   weatherWidget.classList.toggle('locked', weatherLocked);
-  weatherLock.textContent = weatherLocked ? '🔒' : '🔓';
+  weatherLock.innerHTML = weatherLocked
+  ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`
+  : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>`;
 }
 
 function loadWeatherPosition() {
