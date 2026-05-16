@@ -1,4 +1,16 @@
   document.addEventListener('DOMContentLoaded', () => {
+    const widgetAnimStyle = document.createElement('style');
+widgetAnimStyle.textContent = `
+  @keyframes widgetFadeIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes widgetFadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.85); }
+  }
+`;
+document.head.appendChild(widgetAnimStyle);
     document.body.style.opacity = '0';
     document.body.style.visibility = 'visible';
     requestAnimationFrame(() => {
@@ -598,17 +610,15 @@ function applySavedFont(font) {
         if (typeof applySecurityMode === 'function') applySecurityMode();
       });
     }
-  }
 
-    
-// В самом конце initApp(), после всего:
-  if (localStorage.getItem('ob_date_hidden') === '1') {
-    const date = document.getElementById('date');
-    if (date) date.style.display = 'none';
-  }
-  if (localStorage.getItem('ob_clock_hidden') === '1') {
-    const clock = document.getElementById('clock');
-    if (clock) clock.style.display = 'none';
+    if (localStorage.getItem('ob_date_hidden') === '1') {
+      const date = document.getElementById('date');
+      if (date) date.style.display = 'none';
+    }
+    if (localStorage.getItem('ob_clock_hidden') === '1') {
+      const clock = document.getElementById('clock');
+      if (clock) clock.style.display = 'none';
+    }
   }
 
 
@@ -1988,6 +1998,7 @@ const content = document.getElementById('weather-content');
 if (!widget || !content) return;
 
 widget.style.display = 'block';
+widget.style.animation = 'widgetFadeIn 0.3s ease forwards';
 content.textContent = 'Loading...';
 
   try {
@@ -2015,6 +2026,9 @@ content.innerHTML = `
 
 const savedWeatherSize = localStorage.getItem('ob_weather_size') || 32;
 applyWeatherSize(savedWeatherSize);
+
+if (weatherSizeInput) weatherSizeInput.value = savedWeatherSize;
+if (weatherSizeText) weatherSizeText.value = savedWeatherSize + 'px';
 
 const colour = localStorage.getItem('ob_colour') || '#ffffff';
 const wTemp = document.querySelector('.weather-temp');
@@ -2202,9 +2216,12 @@ const weatherDeleteBtn = document.getElementById('settings-weather-delete');
 if (weatherDeleteBtn) {
   weatherDeleteBtn.addEventListener('click', () => {
     const widget = document.getElementById('weather-widget');
-    if (widget) widget.style.display = 'none';
+    if (widget) {
+      widget.style.animation = 'widgetFadeOut 0.3s ease forwards';
+      setTimeout(() => { widget.style.display = 'none'; }, 300);
+    }
 
-    localStorage .removeItem('ob_weather_city');
+    localStorage.removeItem('ob_weather_city');
     localStorage.removeItem('ob_weather_size');
     localStorage.removeItem('ob_weather_cache');
     localStorage.removeItem('ob_weather_locked');
@@ -2219,6 +2236,7 @@ if (addDateWidget) {
     const date = document.getElementById('date');
     if (date) {
       date.style.display = 'block';
+      date.style.animation = 'widgetFadeIn 0.3s ease forwards';
       localStorage.removeItem('ob_date_hidden');
       const savedSize = localStorage.getItem('ob_date_size') || '18';
       applyDateSize(savedSize);
@@ -2232,6 +2250,7 @@ if (addClockWidget) {
     const clock = document.getElementById('clock');
     if (clock) {
       clock.style.display = 'block';
+      clock.style.animation = 'widgetFadeIn 0.3s ease forwards';
       localStorage.removeItem('ob_clock_hidden');
       const savedSize = localStorage.getItem('ob_clock_size') || '75';
       applyClockSize(savedSize);
@@ -2243,7 +2262,10 @@ const dateDeleteBtn = document.getElementById('settings-date-delete');
 if (dateDeleteBtn) {
   dateDeleteBtn.addEventListener('click', () => {
     const date = document.getElementById('date');
-    if (date) date.style.display = 'none';
+    if (date) {
+      date.style.animation = 'widgetFadeOut 0.3s ease forwards';
+      setTimeout(() => { date.style.display = 'none'; }, 300);
+    }
     localStorage.setItem('ob_date_hidden', '1');
   });
 }
@@ -2252,7 +2274,10 @@ const clockDeleteBtn = document.getElementById('settings-clock-delete');
 if (clockDeleteBtn) {
   clockDeleteBtn.addEventListener('click', () => {
     const clock = document.getElementById('clock');
-    if (clock) clock.style.display = 'none';
+    if (clock) {
+      clock.style.animation = 'widgetFadeOut 0.3s ease forwards';
+      setTimeout(() => { clock.style.display = 'none'; }, 300);
+    }
     localStorage.setItem('ob_clock_hidden', '1');
   });
 }
