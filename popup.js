@@ -322,6 +322,12 @@ const weatherTemp = document.querySelector('.weather-temp');
 
       document.querySelectorAll('.p-u-w, .p-u-w-g').forEach(el => {
         el.style.color = '#4f4f4f';
+
+        const weatherTemp = document.querySelector('.weather-temp');
+      const weatherCity = document.querySelector('.weather-city');
+      if (weatherTemp) weatherTemp.style.color = '#ffffff';
+      if (weatherCity) weatherCity.style.color = '#ffffff';
+      
       });
     }
   }
@@ -593,6 +599,18 @@ function applySavedFont(font) {
       });
     }
   }
+
+    
+// В самом конце initApp(), после всего:
+  if (localStorage.getItem('ob_date_hidden') === '1') {
+    const date = document.getElementById('date');
+    if (date) date.style.display = 'none';
+  }
+  if (localStorage.getItem('ob_clock_hidden') === '1') {
+    const clock = document.getElementById('clock');
+    if (clock) clock.style.display = 'none';
+  }
+
 
   applyAccentColour(state.colour);
 
@@ -1190,6 +1208,11 @@ if (savedFont) {
 
       // 👇 ВАЖНО
       applyAccentColour(defaultColour, 'default');
+
+      const wTemp = document.querySelector('.weather-temp');
+      const wCity = document.querySelector('.weather-city');
+      if (wTemp) wTemp.style.color = '#ffffff';
+      if (wCity) wCity.style.color = '#ffffff';
 
       const colourInput = document.getElementById('colour-input');
       if (colourInput) colourInput.value = defaultColour;
@@ -1993,6 +2016,12 @@ content.innerHTML = `
 const savedWeatherSize = localStorage.getItem('ob_weather_size') || 32;
 applyWeatherSize(savedWeatherSize);
 
+const colour = localStorage.getItem('ob_colour') || '#ffffff';
+const wTemp = document.querySelector('.weather-temp');
+const wCity = document.querySelector('.weather-city');
+if (wTemp) wTemp.style.color = colour;
+if (wCity) wCity.style.color = colour;
+
 requestAnimationFrame(() => {
   const savedFont = localStorage.getItem('ob_font');
   if (savedFont) applySavedFont(savedFont);
@@ -2166,5 +2195,64 @@ if (weatherSizeSave && weatherSizeInput && weatherSizeText) {
     weatherSizeText.value = num + 'px';
 
     localStorage.setItem('ob_weather_size', num);
+  });
+}
+
+const weatherDeleteBtn = document.getElementById('settings-weather-delete');
+if (weatherDeleteBtn) {
+  weatherDeleteBtn.addEventListener('click', () => {
+    const widget = document.getElementById('weather-widget');
+    if (widget) widget.style.display = 'none';
+
+    localStorage .removeItem('ob_weather_city');
+    localStorage.removeItem('ob_weather_size');
+    localStorage.removeItem('ob_weather_cache');
+    localStorage.removeItem('ob_weather_locked');
+    localStorage.removeItem('ob_weather_x');
+    localStorage.removeItem('ob_weather_y');
+  });
+}
+
+const addDateWidget = document.getElementById('add-date-widget');
+if (addDateWidget) {
+  addDateWidget.addEventListener('click', () => {
+    const date = document.getElementById('date');
+    if (date) {
+      date.style.display = 'block';
+      localStorage.removeItem('ob_date_hidden');
+      const savedSize = localStorage.getItem('ob_date_size') || '18';
+      applyDateSize(savedSize);
+    }
+  });
+}
+
+const addClockWidget = document.getElementById('add-clock-widget');
+if (addClockWidget) {
+  addClockWidget.addEventListener('click', () => {
+    const clock = document.getElementById('clock');
+    if (clock) {
+      clock.style.display = 'block';
+      localStorage.removeItem('ob_clock_hidden');
+      const savedSize = localStorage.getItem('ob_clock_size') || '75';
+      applyClockSize(savedSize);
+    }
+  });
+}
+
+const dateDeleteBtn = document.getElementById('settings-date-delete');
+if (dateDeleteBtn) {
+  dateDeleteBtn.addEventListener('click', () => {
+    const date = document.getElementById('date');
+    if (date) date.style.display = 'none';
+    localStorage.setItem('ob_date_hidden', '1');
+  });
+}
+
+const clockDeleteBtn = document.getElementById('settings-clock-delete');
+if (clockDeleteBtn) {
+  clockDeleteBtn.addEventListener('click', () => {
+    const clock = document.getElementById('clock');
+    if (clock) clock.style.display = 'none';
+    localStorage.setItem('ob_clock_hidden', '1');
   });
 }
