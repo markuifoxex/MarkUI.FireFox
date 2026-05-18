@@ -306,6 +306,11 @@ const weatherTemp = document.querySelector('.weather-temp');
       el.style.borderColor = colour;
     });
 
+    document.querySelectorAll('#settings-date-delete, #settings-clock-delete, #settings-weather-delete').forEach(el => {
+      el.style.borderColor = colour;
+      el.style.color = colour;
+    });
+
     // 👉 ВАЖНО: разное поведение
     if (mode === 'theme') {
       // ВСЁ красится в выбранный цвет
@@ -501,10 +506,14 @@ function applySavedFont(font) {
   const weatherWidget = document.getElementById('weather-widget');
   const weatherContent = document.getElementById('weather-content');
   const weatherLock = document.getElementById('weather-lock');
+  const weatherTemp = document.querySelector('.weather-temp');
+  const weatherCity = document.querySelector('.weather-city');
 
   if (weatherWidget) weatherWidget.style.fontFamily = family;
   if (weatherContent) weatherContent.style.fontFamily = family;
   if (weatherLock) weatherLock.style.fontFamily = family;
+  if (weatherTemp) weatherTemp.style.fontFamily = family;
+  if (weatherCity) weatherCity.style.fontFamily = family;
 }
 
   // ── INIT APP ──
@@ -761,6 +770,13 @@ if (savedFont) {
         });
 
         localStorage.setItem('ob_font', font);
+
+        setTimeout(() => {
+          const family = `'${font}', sans-serif`;
+          document.querySelectorAll('.weather-temp, .weather-city').forEach(el => {
+            el.style.fontFamily = family;
+          });
+        }, 50);
 
         const err = document.getElementById('font-error');
         if (err) err.remove();
