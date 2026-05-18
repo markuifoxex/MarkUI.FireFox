@@ -1854,3 +1854,45 @@ right: auto;
 #weather-save:hover {
   opacity: 0.85;
 }
+
+/* Blur Changer */
+
+#settings-blur {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+#settings-blur::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-blur::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-colour);
+  border: none;
+  cursor: pointer;
+}
+
+#settings-blur::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  cursor: pointer;
+}

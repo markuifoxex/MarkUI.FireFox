@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="Icons/Icon512.png">
+  <link rel="icon" type="image/png" href="Icons/IconHome.png">
 </head>
 <body style="visibility:hidden; opacity:0;">
 
@@ -198,12 +198,14 @@
       <p class="M-S">Main Settings</p>
     </div>
 
+    <!-- Fonts Changer -->
     <div class="fonts-f"> 
   <p class="f-w">Fonts Changer</p>  
   <input id="settings-city-fonts" type="text" placeholder='Default font - "Jost". Only GoogleFonts' />
   <button id="settings-font-save" class="btn-finish" style="margin-top:10px;">save</button>
 </div>
 
+<!-- Transparency Changer -->
 <section class="settings-section-t">
   <p class="settings-label-t">Transparency changer</p>  
   <input id="settings-transparency" type="range" min="0" max="100" value="15">
@@ -220,15 +222,23 @@
     </div>
   </div>
 
+  <!-- Border Radius Changer -->
   <div class="border-picker-header" id="border-picker-toggle">
     <p class="settings-bor-cha">Corner-Radius changer</p>
     <span class="border-arrow" id="border-arrow" title="more options">˄</span>
   </div>
-
   <input id="settings-borderradius" type="range" min="0" max="35" value="15">
   <button id="settings-border-save" class="btn-finish" style="margin-top:10px;">save</button>
 </section>
 
+<!-- Blur Changer -->
+<section class="settings-br-c">
+  <p class="settings-bor-cha">Blur changer</p>
+  <input id="settings-blur" type="range" min="0" max="100" value="10">
+  <button id="settings-blur-save" class="btn-finish" style="margin-top:10px;">save</button>
+</section>
+
+<!-- Wallpaper Changer -->
 <div class="fonts-w"> 
   <p class="c-w">Wallpaper changer</p>
   <input type="file" id="wallpaper-input" accept="image/*" style="display:none;">
@@ -240,6 +250,7 @@
   </a>
 </p>
 
+<!-- Security Mode -->
 <div class="security-mode-m">
   <p class="security-mode">Privacy-mode<img src="/Icons/help.png" class="info" width="12" height="12" title="Privacy mode hides the text you type
 in the search bar so no one can see it." style="cursor: pointer;"></p>
@@ -257,9 +268,9 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
   <img src="/Icons/Rectangle.png">
 </div>
 
+<!-- Date Changer -->
 <section class="settings-section-t-c" style="margin-top: -20px;">
   <p class="settings-label-t">Date changer</p>
-
   <select id="settings-date-format">
     <option value="ddmmyyyy">DD.MM.YYYY</option>
     <option value="mmddyyyy">MM.DD.YYYY</option>
@@ -279,6 +290,7 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
   <button id="settings-date-save" class="btn-finish">save</button>
 </section>
 
+<!-- Date Size -->
 <section class="settings-section-t-c">
   <p class="settings-label-t">Date size</p> 
   <input id="settings-date-size" type="range" min="1" max="220" value="18">
@@ -294,6 +306,7 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
   </button>
 </section>
 
+<!-- Clock Size -->
 <section class="settings-section-t-c">
   <p class="settings-label-t">Clock size</p>
   <input id="settings-clock-size" type="range" min="1" max="220" value="75">
@@ -310,6 +323,7 @@ in the search bar so no one can see it." style="cursor: pointer;"></p>
 </button>
 </section>
 
+<!-- Weather Widget -->
 <section class="settings-section-t-c">
 <p class="settings-label-t">Weather widget</p>
   <p class="settings-label-t" style="margin-top:10px;">Weather size</p>

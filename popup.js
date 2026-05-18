@@ -2297,3 +2297,32 @@ if (clockDeleteBtn) {
     localStorage.setItem('ob_clock_hidden', '1');
   });
 }
+
+function applyBlur (value) {
+  const blur = `blur(${value}px)`;
+  const settingsDrawer = document.getElementById('settings-drawer');
+  if (settingsDrawer) settingsDrawer.style.backdropFilter = blur;
+  document.querySelectorAll('.search-form input').forEach(el => {
+    el.style.backdropFilter = blur
+  });
+}
+
+const blurInput = document.getElementById('settings-blur');
+const blurSave = document.getElementById('settings-blur-save');
+
+const savedBlur = localStorage.getItem('ob_blur') || '10';
+if (blurInput) blurInput.value = savedBlur;
+applyBlur(savedBlur);
+
+if  (blurInput) {
+  blurInput.addEventListener('input', () => {
+    applyBlur(blurInput.value);
+  });
+
+if (blurSave) {
+  blurSave.addEventListener('click', () => {
+    localStorage.setItem('ob_blur', blurInput.value);
+    applyBlur(blurInput.value);
+});
+  }
+}
