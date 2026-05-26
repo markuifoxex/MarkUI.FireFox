@@ -987,6 +987,7 @@ html, body {
   align-items: center;
 }
 
+/* theme items hover */
 .theme-item-green:hover {
     color: #7d926c;
 }
@@ -1293,6 +1294,18 @@ html, body {
 
 .theme-item-pink-ast:hover {
   color: #ce6f64;
+}
+
+.theme-item-colorful-apple:hover {
+  color: #f21a2b;
+}
+
+.theme-item-think-different:hover {
+  color: #000000;
+}
+
+.theme-item-hello-apple:hover {
+  color: #0e0d31;
 }
 
 .theme-item-uk:hover .theme-name {
