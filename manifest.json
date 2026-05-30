@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MonoUI",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Customizable homepage with icons, fonts, and styles.",
 
   "browser_specific_settings": {
