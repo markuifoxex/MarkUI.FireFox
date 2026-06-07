@@ -1426,33 +1426,6 @@ if (savedFont) {
     });
   }
 
-  // Применение обоев
-
-  document.querySelectorAll(".theme-item-apple .theme-card, .theme-item-window .theme-card, .theme-item-linux .theme-card, .theme-item-quotes .theme-card, .theme-item-Duck .theme-card, .theme-item-pink .theme-card, .theme-item-reddot .theme-card, .theme-item-redq .theme-card, .theme-item-krak .theme-card, .theme-item-wars .theme-card, .theme-item-Japan .theme-card, .theme-item-Fantasy .theme-card, .theme-item-f1 .theme-card, .theme-item-2026 .theme-card, .theme-item-Dog .theme-card, .theme-item-Cat .theme-card, .theme-item-Gorilla .theme-card, .theme-item-Cloud .theme-card, .theme-item-popy .theme-card, .theme-item-jojo .theme-card, .theme-item-tutu .theme-card, .theme-item-nite .theme-card, .theme-item-w11b .theme-card, .theme-item-w11w .theme-card, .theme-item-scifi .theme-card, .theme-item-sci-fi .theme-card, .theme-item-11 .theme-card, .theme-item-mac .theme-card, .theme-item-mono .theme-card, .theme-item-chrome .theme-card, .theme-item-xbox .theme-card, .theme-item-ps .theme-card, .theme-item-anon .theme-card, .theme-item-code .theme-card, .theme-item-l-love .theme-card, .theme-item-d-love .theme-card, .theme-item-boy .theme-card, .theme-item-girl .theme-card, .theme-item-Abstract-1 .theme-card, .theme-item-Abstract-1 .theme-card, .theme-item-k-pop .theme-card, .theme-item-mountains .theme-card, .theme-item-Geometric .theme-card, .theme-item-Geometric-m .theme-card, .theme-item-geo .theme-card, .theme-item-geom .theme-card, .theme-item-gold .theme-card, .theme-item-m-build .theme-card, .theme-item-build .theme-card, .theme-item-anime-1 .theme-card, .theme-item-anime-2 .theme-card, .theme-item-anime-3 .theme-card, .theme-item-anime-4 .theme-card, .theme-item-anime-5 .theme-card, .theme-item-anime-6 .theme-card, .theme-item-anime-7 .theme-card, .theme-item-anime-8 .theme-card, .theme-item-anime-9 .theme-card, .theme-item-anime-10 .theme-card, .theme-item-anime-11 .theme-card, .theme-item-anime-12 .theme-card, .theme-item-anime-13 .theme-card, .theme-item-anime-14 .theme-card, .theme-item-car .theme-card, .theme-item-wave .theme-card, .theme-item-retro .theme-card, .theme-item-mount .theme-card, .theme-item-sun .theme-card, .theme-item-white .theme-card, .theme-item-neon .theme-card, .theme-item-yellow .theme-card, .theme-item-pink-ast .theme-card, .theme-item-colorful-apple .theme-card, .theme-item-think-different .theme-card, .theme-item-hello-apple .theme-card").forEach(img => {
-    img.style.cursor = "pointer";
-    img.addEventListener('click', () => {
-      const src = img.src;
-      const app = document.getElementById('app');
-      if (app) {
-    app.style.transition = 'opacity 0.4s ease';
-    app.style.opacity = '0';
-    setTimeout(() => {
-      app.style.backgroundImage = `url(${src})`;
-      app.style.opacity = '1';
-    }, 400);
-  }
-
-      // Сохраняем как URL (не IndexedDB — это не загруженный файл)
-
-      localStorage.setItem('ob_wallpaper_url', src);
-
-      //  закрывание окна
-
-      const themeModal = document.getElementById('theme-modal');
-      if (themeModal) themeModal.classList.remove('open');
-    });
-  });
-
   // Opened Widgets Grid
 
   const widgetsOpenBtn = document.getElementById('widgets-open-btn');
