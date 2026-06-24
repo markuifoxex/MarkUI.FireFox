@@ -2300,9 +2300,16 @@ if (blurSave) {
   }
 }
 
+
 // ── MEDIA PLAYER ──
 (function() {
-  const api = typeof browser !== 'undefined' ? browser : chrome;
+  const browserApi = (function() {
+    if (typeof browser !== 'undefined' && browser.storage) return browser;
+    if (typeof chrome !== 'undefined' && chrome.storage) return chrome;
+    return null;
+  })();
+
+  if (!browserApi) return; // нет API — выходим тихо
 
   const titleEl  = document.getElementById('media-title');
   const artistEl = document.getElementById('media-artist');
@@ -2312,19 +2319,19 @@ if (blurSave) {
   const nextBtn  = document.getElementById('media-next');
 
   function updateUI(d) {
+    if (!d) return;
     titleEl.textContent  = d.title  || 'Nothing playing';
     artistEl.textContent = d.artist || '';
     if (d.artwork) { artEl.src = d.artwork; artEl.style.display = 'block'; }
-    else             artEl.style.display = 'none';
+    else artEl.style.display = 'none';
     const img = playBtn.querySelector('img');
     if (img) img.src = d.playing
       ? '/Icons/pause-stroke-rounded.png'
       : '/Icons/play-stroke-rounded.png';
   }
 
-  // читаем из storage каждую секунду
   setInterval(() => {
-    api.storage.local.get('monoui_media').then(r => {
+    browserApi.storage.local.get('monoui_media').then(r => {
       if (r?.monoui_media && Date.now() - r.monoui_media.ts < 4000) {
         updateUI(r.monoui_media);
       }
@@ -2332,13 +2339,13 @@ if (blurSave) {
   }, 1000);
 
   function cmd(type) {
-    api.runtime.sendMessage({ type }).catch(() => {});
+    browserApi.runtime.sendMessage({ type }).catch(() => {});
   }
 
-  playBtn.addEventListener('click', () => {
+  if (playBtn) playBtn.addEventListener('click', () => {
     const isPlaying = playBtn.querySelector('img')?.src.includes('pause');
     cmd(isPlaying ? 'MEDIA_PAUSE' : 'MEDIA_PLAY');
   });
-  prevBtn.addEventListener('click', () => cmd('MEDIA_PREV'));
-  nextBtn.addEventListener('click', () => cmd('MEDIA_NEXT'));
+  if (prevBtn) prevBtn.addEventListener('click', () => cmd('MEDIA_PREV'));
+  if (nextBtn) nextBtn.addEventListener('click', () => cmd('MEDIA_NEXT'));
 })();
