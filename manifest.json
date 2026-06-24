@@ -26,6 +26,27 @@
     }
   },
 
+  "background": {
+  "service_worker": "background.js"
+},
+"content_scripts": [
+  {
+    "matches": [
+  "*://*.youtube.com/*",
+  "*://*.music.youtube.com/*",
+  "*://*.spotify.com/*",
+  "*://*.music.apple.com/*",
+  "*://*.soundcloud.com/*",
+  "*://*.deezer.com/*",
+  "*://*.tidal.com/*",
+  "*://*.pandora.com/*",
+  "*://*.amazon.com/music/*",
+  "*://*.music.amazon.com/*",
+  "*://*.twitch.tv/*"
+],
+    "js": ["content.js"]
+  }
+],
 
   "permissions": [
     "storage",
