@@ -2322,13 +2322,15 @@ if (blurSave) {
     if (!d) return;
     titleEl.textContent  = d.title  || 'Nothing playing';
     artistEl.textContent = d.artist || '';
-    if (d.artwork) { artEl.src = d.artwork; artEl.style.display = 'block'; }
+    if (d.artwork) { artEl.src = d.artwork; artEl.style.display = 'b  lock'; }
     else artEl.style.display = 'none';
-    const img = playBtn.querySelector('img');
-    if (img) img.src = d.playing
+
+    // используем id иконки напрямую
+    const playImg = document.getElementById('media-play-img');
+    if (playImg) playImg.src = d.playing
       ? '/Icons/pause-stroke-rounded.png'
       : '/Icons/play-stroke-rounded.png';
-  }
+} 
 
   setInterval(() => {
     browserApi.storage.local.get('monoui_media').then(r => {
@@ -2343,9 +2345,10 @@ if (blurSave) {
   }
 
   if (playBtn) playBtn.addEventListener('click', () => {
-    const isPlaying = playBtn.querySelector('img')?.src.includes('pause');
+    const playImg = document.getElementById('media-play-img');
+    const isPlaying = playImg?.src.includes('pause');
     cmd(isPlaying ? 'MEDIA_PAUSE' : 'MEDIA_PLAY');
-  });
+});
   if (prevBtn) prevBtn.addEventListener('click', () => cmd('MEDIA_PREV'));
   if (nextBtn) nextBtn.addEventListener('click', () => cmd('MEDIA_NEXT'));
 })();
