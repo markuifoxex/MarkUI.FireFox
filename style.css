@@ -249,13 +249,21 @@ html, body {
   text-overflow: ellipsis; 
   white-space: nowrap;
 }
+
 .delete-btn {
-  position: absolute; top: -6px; right: 6px;
+  position: absolute; top: -px; right: 6px;
   background: rgba(255,60,60,0.85); border: none; border-radius: 50%;
   width: 18px; height: 18px; font-size: 11px; color: white;
-  cursor: pointer; display: none; align-items: center; justify-content: center;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
-.site-card:hover .delete-btn { display: flex; }
+.site-card:hover .delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.4s ease 0.5s; /* задержка 0.6с перед началом появления */
+}
  
 #add-btn {
   width: 50px; 
@@ -1955,7 +1963,7 @@ right: auto;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 20px;
+  border-radius: var(--player-radius, 20px);
   z-index: 150;
   min-width: 280px;
   max-width: 460px;

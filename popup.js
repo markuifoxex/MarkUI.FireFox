@@ -273,6 +273,9 @@ const weatherTemp = document.querySelector('.weather-temp');
     if (weatherTemp) weatherTemp.style.color = colour;
     if (weatherCity) weatherCity.style.color = colour;
 
+    const MediaTitle = document.getElementById('media-title');
+    if (MediaTitle) MediaTitle.style.color = colour;
+
     document.querySelectorAll('.search-form input').forEach(el => {
       el.style.borderColor = colour;
       el.style.color = colour;  
@@ -361,6 +364,12 @@ const weatherTemp = document.querySelector('.weather-temp');
     const settingsDrawer = document.getElementById('settings-drawer');
     if (settingsDrawer) {
       settingsDrawer.style.background = bgValue;
+
+      const mediaPlayer = document.getElementById('media-player');
+    if (mediaPlayer) {
+      mediaPlayer.style.background = bgValue;
+      
+      }
     }
   }
 
@@ -382,6 +391,11 @@ const weatherTemp = document.querySelector('.weather-temp');
       document.querySelectorAll('.site-icon').forEach(el => {
         el.style.borderRadius = r;
       });
+    }
+
+    if (target === 'all') {
+      const mediaPlayer = document.getElementById('media-player');
+      if (mediaPlayer) mediaPlayer.style.borderRadius = r;
     }
   }
 
@@ -514,6 +528,9 @@ function applySavedFont(font) {
   if (weatherLock) weatherLock.style.fontFamily = family;
   if (weatherTemp) weatherTemp.style.fontFamily = family;
   if (weatherCity) weatherCity.style.fontFamily = family;
+
+  const mediaTitle = document.getElementById('media-title');
+  if (mediaTitle) mediaTitle.style.fontFamily = family;
 }
 
   // ── INIT APP ──
@@ -768,6 +785,9 @@ if (savedFont) {
         document.querySelectorAll('.search-form input').forEach(el => {
         el.style.fontFamily = `'${font}', sans-serif`;
         });
+
+        const mediaTitle = document.getElementById('media-title');
+        if (mediaTitle) mediaTitle.style.fontFamily = `'${font}', sans-serif`;
 
         localStorage.setItem('ob_font', font);
 
@@ -2278,6 +2298,13 @@ function applyBlur (value) {
   document.querySelectorAll('.search-form input').forEach(el => {
     el.style.backdropFilter = blur
   });
+
+  const mediaPlayer = document.getElementById('media-player');
+  if (mediaPlayer) {
+    mediaPlayer.style.backdropFilter = blur;
+    mediaPlayer.style.webkitBackdropFilter = blur;
+
+  }
 }
 
 const blurInput = document.getElementById('settings-blur');
@@ -2309,7 +2336,7 @@ if (blurSave) {
     return null;
   })();
 
-  if (!browserApi) return; // нет API — выходим тихо
+  if (!browserApi) return;
 
   const titleEl  = document.getElementById('media-title');
   const artistEl = document.getElementById('media-artist');
@@ -2317,20 +2344,36 @@ if (blurSave) {
   const playBtn  = document.getElementById('media-play');
   const prevBtn  = document.getElementById('media-prev');
   const nextBtn  = document.getElementById('media-next');
+  const playImg  = document.getElementById('media-play-img');
+
+  // пока не истёк lockUntil — не даём опросу перебить иконку после клика
+  let lockUntil = 0;
+
+  function setPlayIcon(playing) {
+    if (playImg) {
+      playImg.src = playing
+        ? '/Icons/pause-stroke-rounded.png'
+        : '/Icons/play-stroke-rounded.png';
+    }
+  }
 
   function updateUI(d) {
     if (!d) return;
     titleEl.textContent  = d.title  || 'Nothing playing';
     artistEl.textContent = d.artist || '';
-    if (d.artwork) { artEl.src = d.artwork; artEl.style.display = 'b  lock'; }
-    else artEl.style.display = 'none';
 
-    // используем id иконки напрямую
-    const playImg = document.getElementById('media-play-img');
-    if (playImg) playImg.src = d.playing
-      ? '/Icons/pause-stroke-rounded.png'
-      : '/Icons/play-stroke-rounded.png';
-} 
+    if (d.artwork) {
+      artEl.onerror = () => { artEl.style.display = 'none'; };
+      artEl.src = d.artwork;
+      artEl.style.display = 'block';
+    } else {
+      artEl.style.display = 'none';
+    }
+
+    if (Date.now() > lockUntil) {
+      setPlayIcon(d.playing);
+    }
+  }
 
   setInterval(() => {
     browserApi.storage.local.get('monoui_media').then(r => {
@@ -2338,17 +2381,21 @@ if (blurSave) {
         updateUI(r.monoui_media);
       }
     }).catch(() => {});
-  }, 1000);
+  }, 500);
 
   function cmd(type) {
     browserApi.runtime.sendMessage({ type }).catch(() => {});
   }
 
   if (playBtn) playBtn.addEventListener('click', () => {
-    const playImg = document.getElementById('media-play-img');
     const isPlaying = playImg?.src.includes('pause');
+
+    setPlayIcon(!isPlaying);
+    lockUntil = Date.now() + 1000;
+
     cmd(isPlaying ? 'MEDIA_PAUSE' : 'MEDIA_PLAY');
-});
+  });
+
   if (prevBtn) prevBtn.addEventListener('click', () => cmd('MEDIA_PREV'));
   if (nextBtn) nextBtn.addEventListener('click', () => cmd('MEDIA_NEXT'));
 })();
